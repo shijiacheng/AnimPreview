@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:desktop_drop/desktop_drop.dart';
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
@@ -40,18 +41,33 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     _controller.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
-    if (_lottieFile == null) {
-      return emptyView();
-    } else {
-      return LottiePreview();
-    }
+    return dropFileView();
+  }
+
+  Widget dropFileView() {
+    return DropTarget(
+        onDragDone: (DropDoneDetails details) {
+          debugPrint("onDragDone details=${details.files}");
+          // 获取到文件路径
+          String? path = details.files.last.path;
+          debugPrint("path=$path");
+          if (path.isNotEmpty) {
+            _isAnimPlaying = false;
+            _currentSliderValue = 0;
+            _controller.stop();
+            _controller.reset();
+            File file = File(path);
+            lottieFile(file);
+          }
+        },
+      child: _lottieFile == null ? emptyView() :lottiePreview()
+    );
   }
 
   Widget emptyView() {
@@ -62,9 +78,13 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
         IconButton(
             onPressed: () async {
               FilePickerResult? result =
-                  await FilePicker.platform.pickFiles();
+                  await FilePicker.platform.pickFiles(allowedExtensions: ["json"]);
 
               if (result != null) {
+                _isAnimPlaying = false;
+                _currentSliderValue = 0;
+                _controller.stop();
+                _controller.reset();
                 File file = File(result.files.single.path!);
                 lottieFile(file);
               } else {
@@ -73,12 +93,12 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
             },
             icon: const Icon(Icons.ads_click_rounded,
                 size: 60, color: Colors.blue)),
-        const Text("点击上传一个Lottie文件到此处预览")
+        const Text("点击上传或拖拽一个Lottie文件到此处预览")
       ],
     );
   }
 
-  Widget LottiePreview() {
+  Widget lottiePreview() {
     return Column(
       children: [
         Container(
@@ -95,9 +115,15 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                   ),
                   onPressed: () async {
                     FilePickerResult? result =
-                        await FilePicker.platform.pickFiles();
+                        await FilePicker.platform.pickFiles(allowedExtensions: ["json"]);
 
                     if (result != null) {
+                      _isAnimPlaying = false;
+                      _currentSliderValue = 0;
+                      _controller.stop();
+                      _controller.reset();
+
+
                       File file = File(result.files.single.path!);
                       lottieFile(file);
                     } else {
@@ -121,6 +147,9 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
               onLoaded: (composition) {
                 _controller.duration = composition.duration;
               },
+                  errorBuilder: (context, exception, stackTrace) {
+                    return const Text('😢');
+                  },
             ))
           ],
         )),
@@ -136,7 +165,6 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     if (_isAnimPlaying) {
                       _controller.stop();
                     } else {
-                      _controller.reset();
                       _controller.forward();
                       _controller.repeat();
                     }
@@ -146,9 +174,20 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                   icon: Icon(
                       _isAnimPlaying ? Icons.pause_circle : Icons.play_circle,
                       color: Colors.white,
-                      size: 30)),
-              Container(
-                width: 500,
+                      size: 32)),
+              IconButton(
+                  onPressed: () {
+                    _controller.stop();
+                    _controller.reset();
+                    _isAnimPlaying = false;
+                    setState(() {});
+                  },
+                  icon: const Icon(
+                      Icons.stop_circle,
+                      color: Colors.white,
+                      size: 32)),
+              SizedBox(
+                width: 400,
                 child: Slider(
                   value: _currentSliderValue,
                   activeColor: Colors.white,
@@ -157,6 +196,8 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                   onChanged: (double value) {
                     setState(() {
                       _currentSliderValue = value;
+                      _isAnimPlaying = false;
+                      _controller.animateTo(_currentSliderValue / 100);
                     });
                   },
                 ),
