@@ -1,16 +1,27 @@
-# anim_preview
+# Anim Preview
 
-A new Flutter project.
+一个用于快速预览Lottie的桌面客户端软件。
 
-## Getting Started
+## 使用效果
 
-This project is a starting point for a Flutter application.
+![](./Screenshots/启动页.PNG)
 
-A few resources to get you started if this is your first Flutter project:
+![](./Screenshots/Lottie预览.PNG)
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+## Feature
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- 拖拽、点击选择文件
+- Lottie文件预览
+- 控制动画播放进度
+
+## TODO
+
+- 动态修改Lottie动画属性
+- 动画倍速播放
+- 动画逆序播放
+
+
+
+## License
+
+Project is released under the terms of the MIT License.

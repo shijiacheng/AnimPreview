@@ -98,6 +98,34 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
     );
   }
 
+  Widget errorView() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.max,
+      children: [
+        IconButton(
+            onPressed: () async {
+              FilePickerResult? result =
+              await FilePicker.platform.pickFiles(allowedExtensions: ["json"]);
+
+              if (result != null) {
+                _isAnimPlaying = false;
+                _currentSliderValue = 0;
+                _controller.stop();
+                _controller.reset();
+                File file = File(result.files.single.path!);
+                lottieFile(file);
+              } else {
+                // User canceled the picker
+              }
+            },
+            icon: const Icon(Icons.ads_click_rounded,
+                size: 60, color: Colors.blue)),
+        const Text("选择的不是Lottie文件，请重新选择")
+      ],
+    );
+  }
+
   Widget lottiePreview() {
     return Column(
       children: [
@@ -148,7 +176,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                 _controller.duration = composition.duration;
               },
                   errorBuilder: (context, exception, stackTrace) {
-                    return const Text('😢');
+                    return errorView();
                   },
             ))
           ],
