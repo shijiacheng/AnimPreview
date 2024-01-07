@@ -6,6 +6,7 @@ import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import '../model/LottieModel.dart';
+import 'generated/l10n.dart';
 
 class LottiePreviewPageUI extends StatefulWidget {
   const LottiePreviewPageUI({super.key});
@@ -23,7 +24,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
   bool _isAnimPlaying = false;
   bool _isInfoWidgetShow = false;
   LottieModel? _lottieModel;
-  int _speedLevel = 1;
+  int _speedLevel = 2;
 
   //lottie动画控制器
   late AnimationController _controller;
@@ -98,7 +99,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
             },
             icon: const Icon(Icons.ads_click_rounded,
                 size: 60, color: Colors.blue)),
-        const Text("点击上传或拖拽一个Lottie文件到此处预览")
+        Text(S.of(context).openTips),
       ],
     );
   }
@@ -126,7 +127,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
             },
             icon: const Icon(Icons.ads_click_rounded,
                 size: 60, color: Colors.blue)),
-        const Text("选择的不是Lottie文件，请重新选择")
+        Text(S.of(context).openLottieError)
       ],
     );
   }
@@ -217,7 +218,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
             mainAxisSize: MainAxisSize.max,
             children: [
               IconButton(
-                  tooltip: "倒放",
+                  tooltip: S.of(context).animReverse,
                   onPressed: () {
                     if (_isAnimPlaying) {
                       _controller.stop();
@@ -231,7 +232,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                   icon: Icon(Icons.skip_previous_rounded,
                       color: Colors.white, size: 32)),
               IconButton(
-                tooltip: "播放",
+                tooltip: _isAnimPlaying ? S.of(context).animPause :  S.of(context).animPlay,
                   onPressed: () {
                     if (_isAnimPlaying) {
                       _controller.stop();
@@ -252,7 +253,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                       color: Colors.white,
                       size: 32)),
               IconButton(
-                  tooltip: "停止",
+                  tooltip: S.of(context).animStop,
                   onPressed: () {
                     _controller.stop();
                     _controller.reset();
@@ -293,7 +294,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
         mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment:CrossAxisAlignment.start,
         children: [
-          Text("播放速度", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
+          Text(S.of(context).animSpeed, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
 
           Row(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -323,7 +324,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
             ],
           ),
 
-          Text("文件信息", style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
+          Text(S.of(context).animInfo, style: TextStyle(color: Colors.white, fontSize: 16, fontWeight: FontWeight.bold),),
 
           Container(
             padding: EdgeInsets.all(15),
@@ -335,7 +336,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     SizedBox(
                         width: 120,
                         height: 25,
-                        child: Text("名称", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
+                        child: Text(S.of(context).animName, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
                     ),
                     Text(model == null ? "" : model.name!, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),)
 
@@ -347,7 +348,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     SizedBox(
                         width: 120,
                         height: 25,
-                        child: Text("动画时长", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
+                        child: Text(S.of(context).animDuration, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
                     ),
                     Text(model == null ? "" : "${model.duration!.inSeconds} 秒", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),)
 
@@ -360,7 +361,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     SizedBox(
                         width: 120,
                         height: 25,
-                        child: Text("帧数", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
+                        child: Text(S.of(context).frameCount, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
                     ),
                     Text(model == null ? "" : (model.endFrame! - model.startFrame!).toInt().toString(), style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),)
                   ],
@@ -372,7 +373,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     SizedBox(
                         width: 120,
                         height: 25,
-                        child: Text("帧率", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
+                        child: Text(S.of(context).frameRate, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
                     ),
                     Text(model == null ? "" : model.frameRate!.toInt().toString(), style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),)
 
@@ -384,7 +385,7 @@ class LottiePreviewPageState extends State<LottiePreviewPageUI>
                     SizedBox(
                         width: 120,
                         height: 25,
-                        child: Text("动画尺寸", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
+                        child: Text(S.of(context).animBoundsSize, style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500))
                     ),
                     Text(model == null ? "" : "${model.width!} x ${model.height!}", style: TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.w500),)
 

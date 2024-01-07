@@ -1,0 +1,16 @@
+{
+  "helloWorld": "Hello World",
+  "openTips": "Click to upload or drag a Lottie file to preview here.",
+  "openLottieError": "The selected file is not a Lottie file, please select again.",
+  "animReverse": "reverse",
+  "animPlay": "play",
+  "animPause": "pause",
+  "animStop": "stop",
+  "animSpeed": "Play speed",
+  "animInfo": "Animation info",
+  "animName":"Animation name",
+  "animDuration": "Animation duration",
+  "frameCount": "Frames",
+  "frameRate": "Frame rate",
+  "animBoundsSize": "Animation size"
+}

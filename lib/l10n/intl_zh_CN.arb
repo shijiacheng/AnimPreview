@@ -1,0 +1,16 @@
+{
+  "helloWorld": "世界，你好👋",
+  "openTips": "点击上传或拖拽一个Lottie文件到此处预览",
+  "openLottieError": "选择的不是Lottie文件，请重新选择",
+  "animReverse": "倒放",
+  "animPlay": "播放",
+  "animPause": "暂停",
+  "animStop": "停止",
+  "animSpeed": "播放速度",
+  "animInfo": "动画信息",
+  "animName":"名称",
+  "animDuration": "动画时长",
+  "frameCount": "帧数",
+  "frameRate": "帧率",
+  "animBoundsSize": "动画尺寸"
+}
